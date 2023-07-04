@@ -1,0 +1,9 @@
+<div id="note_<%= note.id %>" class="note">
+  <h2 class="note-title"><%= note.title %></h2>
+  <p class="note-content"><%= note.content %></p>
+  
+  <div class="note-actions">
+    <%= button_to "Editar", edit_note_path(note), method: :get, remote: true, class: "edit-button", data: { turbo_frame: "notes" } %>
+    <%= button_to "Eliminar", note_path(note), method: :delete, remote: true, class: "delete-button", data: { confirm: "¿Estás seguro de que deseas eliminar esta nota?" } %>
+  </div>
+</div>
