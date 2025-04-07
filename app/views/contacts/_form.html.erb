@@ -1,0 +1,39 @@
+<%= bootstrap_form_with(model: contact, data: { controller: "numbers" }) do |form| %>
+  <% if contact.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(contact.errors.count, "error") %> prohibited this contact from being saved:</h2>
+
+      <ul>
+        <% contact.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.text_field :identifier, label: "Alias del contacto:" %>
+  </div>
+
+  <div class="h4 mt-3">
+    <%=  form.fields_for :person do |person_form|%>
+      <%= person_form.hidden_field :id %>
+      <%= person_form.text_field :name %>
+    <% end %>
+  </div>
+
+  <%= turbo_frame_tag "numbers" do %>
+    <div class="h4 mt-3">
+      <%=  form.fields_for :phone_numbers do |phone_numbers_form|%>
+        <%= phone_numbers_form.hidden_field :id %>
+        <%= phone_numbers_form.text_field :number %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <button type="button" data-action="click->numbers#add" class="btn btn-outline-secundary">Añadir otro</button>
+
+  <div>
+    <%= form.submit "Guardar", class:"btn btn-primary fs-4 block w-100" %>
+  </div>
+<% end %>

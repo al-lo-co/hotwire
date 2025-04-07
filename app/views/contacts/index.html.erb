@@ -1,0 +1,9 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Contacts</h1>
+
+<div id="contacts">
+  <%= render @contacts %>
+</div>
+
+<div class="text-center mt-4"><%= link_to "Añadir contacto", new_contact_path, class:"fs-3" %></div>

@@ -12,9 +12,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_107_170_626) do # rubocop:todo Metrics/BlockLength
+ActiveRecord::Schema[7.1].define(version: 20_240_123_185_216) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
+
+  create_table 'contacts', force: :cascade do |t|
+    t.string 'identifier'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+  end
 
   create_table 'motor_alert_locks', force: :cascade do |t|
     t.bigint 'alert_id', null: false
@@ -209,9 +215,27 @@ ActiveRecord::Schema[7.1].define(version: 20_240_107_170_626) do # rubocop:todo 
     t.index ['name'], name: 'motor_tags_name_unique_index', unique: true
   end
 
+  create_table 'people', force: :cascade do |t|
+    t.string 'name'
+    t.bigint 'contact_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['contact_id'], name: 'index_people_on_contact_id'
+  end
+
+  create_table 'phone_numbers', force: :cascade do |t|
+    t.string 'number'
+    t.bigint 'contact_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['contact_id'], name: 'index_phone_numbers_on_contact_id'
+  end
+
   add_foreign_key 'motor_alert_locks', 'motor_alerts', column: 'alert_id'
   add_foreign_key 'motor_alerts', 'motor_queries', column: 'query_id'
   add_foreign_key 'motor_note_tag_tags', 'motor_note_tags', column: 'tag_id'
   add_foreign_key 'motor_note_tag_tags', 'motor_notes', column: 'note_id'
   add_foreign_key 'motor_taggable_tags', 'motor_tags', column: 'tag_id'
+  add_foreign_key 'people', 'contacts'
+  add_foreign_key 'phone_numbers', 'contacts'
 end
